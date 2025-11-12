@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Joke Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: var(--bg-color);
+    }
+    :root{
+       --bg-color: white;
+       --bg-text-color: #007bff;
+       --color-txt: white;
+       --bg-h1:black;
+    }
+    body.dark{
+       --bg-color: black;
+       --bg-text-color: #09f5baa9;
+       --color-txt: black;   
+       --bg-h1: white;
+    }
+    #joke {
+      font-size: 1.3rem;
+      margin: 20px;
+      color: #333;
+      text-align: center;
+    }
+    h1{
+        color: var(--bg-h1);
+        background: var(--bg-color);
+    }
+    button {
+      background-color: var(--bg-text-color);
+      border: none;
+      color: var(--color);
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<button class="toggle" style="width: 20px; height: 20px; position: fixed; top: 10%; left: 20%; background: #09f5ba;"></button>
+  <h1>😂 Random Joke Generator</h1>
+  <div id="joke">Click the button to get a joke!</div>
+  <button onclick="getJoke()">Get a New Joke</button>
+
+<script>
+  async function getJoke() {
+    const jokeDiv = document.getElementById('joke');
+
+    // Fade out
+    jokeDiv.style.transition = "opacity 0.5s";
+    jokeDiv.style.opacity = 0;
+
+    // Wait 500ms before changing the joke
+    setTimeout(async () => {
+      const response = await fetch('/joke');
+      
+      const data = await response.json(); // parse JSON
+      jokeDiv.innerText = data.joke;
+
+      // Fade in
+      jokeDiv.style.opacity = 1;
+    }, 500);
+  }
+
+  function toggleDarkMode() {
+    const btn = document.querySelector('.toggle');
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+
+  } 
+  toggleDarkMode();
+</script>
+
+
+
+</body>
+</html>
